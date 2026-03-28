@@ -197,7 +197,7 @@ let selectedModules = {};
 
                 console.log(`[Row ${rowIndex + 1}] Selecting Project: ${rowProject}...`);
                 await dropdown.click();
-                await new Promise(r => setTimeout(r, 1500)); 
+                await new Promise(r => setTimeout(r, 2000)); 
                 
                 const optionClicked = await page.evaluate(async (name) => {
                     const options = Array.from(document.querySelectorAll('.ant-select-item-option-content'));
@@ -216,17 +216,18 @@ let selectedModules = {};
                 if (!optionClicked) {
                     console.log(`⚠️ Project "${rowProject}" not found exactly, trying backup search/type...`);
                     await dropdown.type(rowProject); 
-                    await new Promise(r => setTimeout(r, 1200));
+                    await new Promise(r => setTimeout(r, 1500));
                     await page.keyboard.press('Enter');
                 }
 
-                await new Promise(r => setTimeout(r, 1500)); // Crucial transformation buffer
+                // Increased Settle Time for Backend Refresh (Crucial for CI)
+                await new Promise(r => setTimeout(r, 3000)); 
 
                 console.log(`[Row ${rowIndex + 1}] Opening Module dropdown (Target: ${rowModule})...`);
                 const moduleDropdown = await page.$(`.ant-modal-content [id='timesheet_data_${rowIndex}_module_id']`);
                 if (moduleDropdown) {
                     await moduleDropdown.click();
-                    await new Promise(r => setTimeout(r, 1200));
+                    await new Promise(r => setTimeout(r, 1500));
                     
                     const moduleClicked = await page.evaluate((name) => {
                         const options = Array.from(document.querySelectorAll('.ant-select-item-option-content'));
@@ -243,11 +244,11 @@ let selectedModules = {};
                     
                     if (!moduleClicked) {
                         await page.keyboard.type(rowModule);
-                        await new Promise(r => setTimeout(r, 800));
+                        await new Promise(r => setTimeout(r, 1000));
                         await page.keyboard.press('Enter'); 
                     }
                 }
-                await new Promise(r => setTimeout(r, 1500)); // Final buffer for Task field transformation
+                await new Promise(r => setTimeout(r, 2500)); // Final buffer for Task field transformation
             } catch (err) {
                 console.error(`❌ Error in selectDropdowns Row ${rowIndex + 1}:`, err.message);
             }
@@ -281,7 +282,7 @@ let selectedModules = {};
                     console.log(`[Row ${rowIndex + 1}] Selecting ${taskToSelect} from dropdown...`);
                     
                     await taskInput.click();
-                    await new Promise(r => setTimeout(r, 1500)); // Wait for dropdown animation
+                    await new Promise(r => setTimeout(r, 2000)); // Wait for dropdown animation
                     const optionClicked = await page.evaluate((task) => {
                         const options = Array.from(document.querySelectorAll('.ant-select-item-option-content'));
                         const target = options.find(el => el.textContent.trim() === task && el.offsetParent !== null);
@@ -295,7 +296,7 @@ let selectedModules = {};
                     if (!optionClicked) {
                         console.log(`⚠️ "${taskToSelect}" not found exactly, trying backup type/enter...`);
                         await page.keyboard.type(taskToSelect);
-                        await new Promise(r => setTimeout(r, 1000));
+                        await new Promise(r => setTimeout(r, 1200));
                         await page.keyboard.press('Enter');
                     }
                 } else {
@@ -332,7 +333,7 @@ let selectedModules = {};
                     console.log(`   -> Entering value in hours field: ${hrsValue}`);
                     await page.keyboard.type(hrsValue, { delay: 30 });
                     await page.keyboard.press('Tab');
-                    await new Promise(r => setTimeout(r, 1000));
+                    await new Promise(r => setTimeout(r, 2000)); // Buffer for UI to process the row hours
                     console.log(`✅ [Row ${rowIndex + 1}] Completed.`);
                 }
             }
