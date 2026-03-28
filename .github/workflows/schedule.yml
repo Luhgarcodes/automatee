@@ -1,0 +1,38 @@
+name: Timesheet Automation Autopilot
+
+on:
+  schedule:
+    # Runs at 09:00 UTC (Around 2:30 PM IST) every Monday through Friday
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch:
+    # Allows you to manually trigger the workflow from the GitHub Actions tab
+
+jobs:
+  run-timesheet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/checkout@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Automation
+        env:
+          GITHUB_ACTIONS: 'true'
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          TELEGRAM_BOT: ${{ secrets.TELEGRAM_BOT }}
+          TELEGRAM_BOT_CHAT_ID: ${{ secrets.TELEGRAM_BOT_CHAT_ID }}
+          TIMESHEET_URL: ${{ secrets.TIMESHEET_URL }}
+          TIMESHEET_EMAIL: ${{ secrets.TIMESHEET_EMAIL }}
+          TIMESHEET_PASSWORD: ${{ secrets.TIMESHEET_PASSWORD }}
+          TIMESHEET_PROJECT: ${{ secrets.TIMESHEET_PROJECT }}
+          TIMESHEET_USER: ${{ secrets.TIMESHEET_USER }}
+          TIMESHEET_TASK_NAME: ${{ secrets.TIMESHEET_TASK_NAME }}
+        run: node index.js

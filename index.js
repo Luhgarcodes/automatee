@@ -93,8 +93,12 @@ let selectedModules = {};
 (async () => {
     console.log("Starting browser...");
     const browser = await puppeteer.launch({ 
-        headless: false,
-        args: ['--start-maximized'],
+        headless: process.env.GITHUB_ACTIONS === 'true',
+        args: [
+            '--start-maximized',
+            '--no-sandbox',
+            '--disable-setuid-sandbox'
+        ],
         defaultViewport: null
     });
     
