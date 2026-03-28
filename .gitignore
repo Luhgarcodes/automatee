@@ -5,3 +5,14 @@ timesheet_snapshot.png
 .DS_Store
 .idea/
 .vscode/
+
+# Temporary and Sensitive Files
+grokk.txt
+debug_gemini.js
+find_models.js
+list_all.js
+list_gemini.js
+modal.html
+modal_row1.html
+select_module.html
+whatineed.html
