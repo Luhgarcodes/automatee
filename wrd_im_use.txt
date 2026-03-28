@@ -1,0 +1,224 @@
+utils fn impl for file upload package impl
+file upload common UI changes impl across the File upload options impl
+impl the lazy loading for project management module to maintain the dependent on load
+
+changes in pro-rated restored same changes in invoice
+login navigation based on QR generated
+changes in functional related to QR based navigation impl
+
+integration log for course checking
+Meeting for SMU
+integration log for course checking
+logging impl for cross checking course in application
+
+pro rated changes on enrollment package impl
+pro rated changes on enrollment package impl
+changes in design of download pdf for pro-rated related changes impl
+
+Pro rated related changes impl on enrollment pipline 
+Meeting For requirement discuss
+Pro rated related changes impl on draft invoice 
+Pro rated related changes on mailed invoice design changes
+
+course view new fn implementation for new demo changes
+changes in json key matching as of new changes for demo impl
+fee structure multiple selection of course impl
+
+new impl for registration ui and fn integration
+summary page fn impl for create done
+
+Summary Page Course Payment Calculation and bug fixes
+Summary Page Course Payment Calculation and bug fixes
+Structure vs unstructured demo changes impl
+fixed issue in packages calculation for demo changes 
+
+
+
+structured and unstructured course impl
+Table redesign for new changes in invoice mail design and function impl for SFC calculation
+SMU Demo changes impl
+
+price and discount related calculation as claimable payment impl
+flow changes in structured and unstructured changes impl
+student based pipeline stages and upload files fn changes
+
+maintaining active menu based on selected menu and stage issue fixes
+moved out common cal fn to cal services to to maintain same format across all calculations
+stackable course changes for SMU demo impl
+
+
+
+
+
+new impl for local storage observable to remove the unused declarations
+new module file impl for separating components for project management
+new module file impl for separating components for project management
+code optmized for unused fn and var impl
+
+changes in login page fn to adapt the new impl of project and event management as login redirect based on type of access
+changes in login page fn to adapt the new impl of project and event management as login redirect based on type of access
+impl ngrx stores to reduce the duration getting data from local store done
+changes in stackable course fn
+
+rxjs impl for reducing the API calling and caching the static data -> new service impl
+rxjs impl for reducing the API calling and caching the static data -> new service impl
+impl of cached calls to maintain the API calling reducing 
+
+impl in new fn changes for milestone for adding out new feilds 
+landing page for project management changes in chart convert in line to bar chart done 
+new design for progress bar changes and fn impl 
+new design for progress bar changes and fn impl 
+
+changes in milestone popup view for viewing out info 
+moved out the server api that wide spread across the service file to common Enum to avoid duplications
+Meeting regarding survey mgnt
+created common services for as of shared service to mainting reliability
+milestone adaption of new changes for common services and endpoints impl
+
+Fee settings related changes for calculation impl in master fee settings impl
+settings changes for new demo requirement
+structure course changes as of new requirement
+
+chat related changes impl 
+minor design issues fixes across the project management module for maintain UI 
+fn changes in program on enrollment-pipeline 
+
+case notes new ui impl
+file and func optimized for new impl as of new requirement
+meeting for finance related changes
+new module impl for loading on lazy loading module impl
+
+changes in package pro-rated calculation and fn
+pro-rated calculation changes as of new requirement
+changes in multi-select component reducing the time complexity and optimization
+
+new setup for project management impl
+
+new setup for project management impl
+menu sidebar privilages impl
+
+menu sidebar privilages impl
+
+
+
+
+
+grid page company master impl 
+
+filter and pagination impl for grid page and export json
+
+create pasge for company impl
+
+new enquiry form impl form 
+
+new enquiry form impl for create impl
+
+project enquiry menu sidebar with active menu impl
+
+project create page new design component impl
+
+edit and view screen for project page impl
+team page create api and design impl done 
+
+team page create api and design impl done 
+
+binding the value as of center based auto selecting impl
+
+dynamic form new fn for accessing leadsource type from param impl
+
+working on milestone view Crud fn
+
+Agreement form changes based on selected center and labelling changes fn changes done
+
+Agreement form changes based on selected center and labelling changes fn changes done
+Minor bug fixes in company details page changes and impl
+
+upload docs fn of compressed version upload optimization fn impl
+
+
+
+
+
+docs list in project pipline list page filter and searh bar fn applied debouncing 
+
+Editable Budget in project pipline impl and internal calculation made for budget selection
+menu side view-position api of unused menus fixes done 
+
+add privilages merger fn to checkout privilages for cross checking with view position Api done
+
+changes on fee json for applied royalty and based on center impl
+
+changes on fee json for applied royalty and based on center impl
+
+Royalty based finance setup changes on invoice create draft component done
+
+Prod code changes for packages related modules of finance and enrol-pipline imp
+
+Prod code changes for packages related modules of finance and enrol-pipline imp
+common file impl for loading only btn that required for resizing on prod impl
+
+common file impl for loading only btn that required for resizing on prod impl
+
+
+
+applying theme as of existing settings for new module 
+
+Enabling Localstorage service file for getting the local storage data using observables
+
+using out new structure of getting out localstore data using subject of RXJS impl
+
+
+
+
+
+Applying out debounce method for optimizing the API calling of selected student attendance list 
+
+checking out usnused service and removing out commented code for optimization 
+Removing out unused fn on of packages and commented code for optimization impl
+
+Removing out unused fn on of packages and commented code for optimization impl
+
+updated dynamic for layout changes 
+
+updated dynamic for layout changes 
+
+updated dynamic for layout changes 
+
+project management approval for mail new fn changes 
+
+project mgnt changes for dialog box listner to skip close fn issue fixes
+mail template new impl for adding parent name and invoice date changes impl
+
+mail template new impl for adding parent name and invoice date changes impl
+
+Main module files and sub module files separate for lazy loading impl
+
+auto highlighting for the menu for active route impl to highlight current menu
+
+changes in agreement form to update as per dynamic form controls impl
+
+
+image lazy loading optimization for enabling all page with image lazy loading impl
+
+student info form changes as of new calc to calc DOB 
+app banner change loading based of viewport changes impl
+
+changes in project tag impl for update in master fn 
+
+changes in key names in functional adjusted to work for Api calls
+
+worked on lesson based fee setting invoice changes
+
+worked on lesson based fee setting invoice changes
+
+discount based changes on enrollment pipeline impl
+
+changes in form auto scroll for invalid validation feilds impl
+
+projcet pipeline changes for update in stage changes in impl
+
+budget module new form desgin impl
+
+budget module new form desgin impl
+
+course based agreement changes impl
