@@ -106,6 +106,9 @@ let selectedModules = {};
     
     const page = await browser.newPage();
     
+    // Set fixed large viewport for consistent screenshots
+    await page.setViewport({ width: 1920, height: 1080 });
+    
     // 1. Initial Notification (So you know it's working!)
     await sendTelegramMessage(`🚀 Timesheet Automation Started!\n📊 Target: ${totalHoursForDay} Hours\n🎰 Set: Randomized Time Set #${timeSets.indexOf(selectedTimeSet) + 1}`);
 
@@ -442,10 +445,12 @@ let selectedModules = {};
                         
                         console.log("Reloading current page...");
                         await page.reload({ waitUntil: 'networkidle2' });
-                        await new Promise(r => setTimeout(r, 3000)); 
+                        console.log("Waiting for page to settle (5s)...");
+                        await new Promise(r => setTimeout(r, 5000)); 
                         
                         console.log("📸 Taking final screenshot after reload...");
                         const reloadSnapshot = 'reloaded_timesheet.png';
+                        // Ensure it captures everything by setting a larger viewport if needed
                         await page.screenshot({ path: reloadSnapshot, fullPage: true });
                         await sendTelegramPhoto(reloadSnapshot, `📊 Page reloaded after automation complete.\nUser: ${process.env.TIMESHEET_USER || 'Raghul G'}`);
                         
