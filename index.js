@@ -4,10 +4,9 @@ const { OpenAI } = require('openai');
 const puppeteer = require('puppeteer');
 const { SYSTEM_PROMPT } = require('./constant');
 
-// Initialize Groq client (OpenAI-compatible)
-const groq = new OpenAI({
-    baseURL: "https://api.groq.com/openai/v1",
-    apiKey: process.env.GROQ_API_KEY,
+// Initialize OpenAI client
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API,
 });
 
 // === Dynamic Time Range Libraries (Natural Variability) ===
@@ -55,14 +54,15 @@ async function sendTelegramMessage(text) {
     }
 }
 
-async function sendTelegramPhoto(filePath) {
+async function sendTelegramPhoto(filePath, customCaption = null) {
     const token = process.env.TELEGRAM_BOT;
     const chatId = process.env.TELEGRAM_BOT_CHAT_ID;
     try {
         const fileBuffer = fs.readFileSync(filePath);
         const formData = new FormData();
         formData.append('chat_id', chatId);
-        formData.append('caption', `✅ Timesheet Automation Complete! (${totalHoursForDay} Hours)\n👤 User: ${process.env.TIMESHEET_USER || 'Raghul G'}\n📊 Task: ${process.env.TIMESHEET_TASK_NAME || 'MindChamps LMS'}`);
+        const caption = customCaption || `✅ Timesheet Automation Complete! (${totalHoursForDay} Hours)\n👤 User: ${process.env.TIMESHEET_USER || 'Raghul G'}\n📊 Task: ${process.env.TIMESHEET_TASK_NAME || 'MindChamps LMS'}`;
+        formData.append('caption', caption);
         const blob = new Blob([fileBuffer], { type: 'image/png' });
         formData.append('photo', blob, 'timesheet.png');
         await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
@@ -91,8 +91,10 @@ let preGeneratedTasks = {};
 let selectedModules = {};
 
 (async () => {
-    console.log("Starting browser...");
-    const browser = await puppeteer.launch({ 
+    let browser;
+    try {
+        console.log("Starting browser...");
+        browser = await puppeteer.launch({ 
         headless: process.env.GITHUB_ACTIONS === 'true',
         args: [
             '--start-maximized',
@@ -107,9 +109,8 @@ let selectedModules = {};
     // 1. Initial Notification (So you know it's working!)
     await sendTelegramMessage(`🚀 Timesheet Automation Started!\n📊 Target: ${totalHoursForDay} Hours\n🎰 Set: Randomized Time Set #${timeSets.indexOf(selectedTimeSet) + 1}`);
 
-    try {
-        console.log(`Navigating to ${URL} ...`);
-        await page.goto(URL, { waitUntil: 'networkidle2' });
+    console.log(`Navigating to ${URL} ...`);
+    await page.goto(URL, { waitUntil: 'networkidle2' });
 
         console.log("Waiting for form fields...");
         await page.waitForSelector('#basic_email');
@@ -142,9 +143,9 @@ let selectedModules = {};
                 const systemPrompt = SYSTEM_PROMPT;
                 const userPrompt = `Generate unique tasks for these 3 modules: ${modulesToGenerate.join(', ')}. Context: MindChamps LMS, enrollment, or tracking.`;
                 
-                console.log("🚀 Batch generating AI tasks via Groq (Llama 3.3 70B)...");
-                const response = await groq.chat.completions.create({
-                    model: "llama-3.3-70b-versatile",
+                console.log("🚀 Batch generating AI tasks via OpenAI (GPT-4o-Mini)...");
+                const response = await openai.chat.completions.create({
+                    model: "gpt-4o-mini",
                     messages: [
                         { role: "system", content: systemPrompt },
                         { role: "user", content: userPrompt }
@@ -257,8 +258,8 @@ let selectedModules = {};
         const generateAITask = async (moduleName) => {
             if (preGeneratedTasks[moduleName]) return preGeneratedTasks[moduleName];
             try {
-                const response = await groq.chat.completions.create({
-                    model: "llama-3.3-70b-versatile",
+                const response = await openai.chat.completions.create({
+                    model: "gpt-4o-mini",
                     messages: [
                         { role: "system", content: SYSTEM_PROMPT },
                         { role: "user", content: `Generate a brief task log for the module: "${moduleName}". Context: student enrollment, package subscriptions, or program tracking.` }
@@ -424,6 +425,37 @@ let selectedModules = {};
                 console.log(`✅ Screenshot saved: ${snapshotPath}`);
                 await sendTelegramPhoto(snapshotPath);
                 console.log("✅ Telegram notification sent successfully!");
+                try {
+                    const buttonClicked = await page.evaluate(() => {
+                        const buttons = Array.from(document.querySelectorAll('button.ant-btn'));
+                        const cancelBtn = buttons.find(b => b.textContent.trim() === 'Cancel');
+                        if (cancelBtn) {
+                            cancelBtn.click();
+                            return true;
+                        }
+                        return false;
+                    });
+                    
+                    if (buttonClicked) {
+                        console.log("Pressing 'Cancel' button...");
+                        await new Promise(r => setTimeout(r, 2000)); // Wait for modal animation
+                        
+                        console.log("Reloading current page...");
+                        await page.reload({ waitUntil: 'networkidle2' });
+                        await new Promise(r => setTimeout(r, 3000)); 
+                        
+                        console.log("📸 Taking final screenshot after reload...");
+                        const reloadSnapshot = 'reloaded_timesheet.png';
+                        await page.screenshot({ path: reloadSnapshot, fullPage: true });
+                        await sendTelegramPhoto(reloadSnapshot, `📊 Page reloaded after automation complete.\nUser: ${process.env.TIMESHEET_USER || 'Raghul G'}`);
+                        
+                        if (fs.existsSync(reloadSnapshot)) fs.unlinkSync(reloadSnapshot);
+                        console.log("✅ Final reload screenshot sent to Telegram!");
+                    }
+                } catch (ce) {
+                    console.error("⚠️ Failed to reload and screenshot:", ce.message);
+                }
+
                 if (fs.existsSync(snapshotPath)) {
                     fs.unlinkSync(snapshotPath);
                 }
@@ -434,5 +466,12 @@ let selectedModules = {};
 
     } catch (error) {
         console.error("An error occurred:", error);
+        process.exit(1);
+    } finally {
+        if (browser) {
+            console.log("Closing browser...");
+            // await browser.close();
+        }
+        process.exit(0);
     }
 })();

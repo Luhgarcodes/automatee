@@ -2,8 +2,8 @@ name: Timesheet Automation Autopilot
 
 on:
   schedule:
-    # Runs at 09:00 UTC (Around 2:30 PM IST) every Monday through Friday
-    - cron: '0 9 * * 1-5'
+    # Runs at 13:30 UTC (7:00 PM IST) every Monday through Friday
+    - cron: '30 13 * * 1-5'
   workflow_dispatch:
     # Allows you to manually trigger the workflow from the GitHub Actions tab
 
