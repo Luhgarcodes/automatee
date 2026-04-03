@@ -2,8 +2,8 @@ name: Timesheet Automation Autopilot
 
 on:
   schedule:
-    # Runs every 5 minutes
-    - cron: '*/5 * * * *'
+    # Runs every 5 minutes, shifted by 2 minutes to avoid peak load
+    - cron: '2-59/5 * * * *'
   workflow_dispatch:
     # Allows you to manually trigger the workflow from the GitHub Actions tab
 
