@@ -379,9 +379,15 @@ let selectedModules = {};
                     
                     if (attempt > 0 && attempt % 3 === 0) {
                         console.log("⚠️ Row initialization stuck. Refreshing modal state...");
-                        const cancelBtn = await page.$('button[type="button"].ant-btn:not(.ant-btn-primary)'); 
-                        if (cancelBtn) {
-                            await cancelBtn.click();
+                        // Instead of Cancel, click Save to preserve progress before retrying
+                        const saveBtn = await page.evaluateHandle(() => {
+                            const buttons = Array.from(document.querySelectorAll('button.ant-btn-primary'));
+                            return buttons.find(b => b.textContent.trim() === 'Save');
+                        });
+                        
+                        if (saveBtn && saveBtn.asElement()) {
+                            console.log("Stuck row detected. Clicking 'Save' before retry...");
+                            await saveBtn.asElement().click();
                             await new Promise(r => setTimeout(r, 4000)); 
                             addBtn = await getAddBtn();
                             if (addBtn) {
@@ -430,17 +436,17 @@ let selectedModules = {};
                 console.log("✅ Telegram notification sent successfully!");
                 try {
                     const buttonClicked = await page.evaluate(() => {
-                        const buttons = Array.from(document.querySelectorAll('button.ant-btn'));
-                        const cancelBtn = buttons.find(b => b.textContent.trim() === 'Cancel');
-                        if (cancelBtn) {
-                            cancelBtn.click();
+                        const buttons = Array.from(document.querySelectorAll('button.ant-btn-primary'));
+                        const saveBtn = buttons.find(b => b.textContent.trim() === 'Save');
+                        if (saveBtn) {
+                            saveBtn.click();
                             return true;
                         }
                         return false;
                     });
                     
                     if (buttonClicked) {
-                        console.log("Pressing 'Cancel' button...");
+                        console.log("Pressing 'Save' button...");
                         await new Promise(r => setTimeout(r, 2000)); // Wait for modal animation
                         
                         console.log("Reloading current page...");
